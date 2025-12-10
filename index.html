@@ -9,20 +9,23 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="귀찮음 진단기 – 오늘 나는 왜 아무것도 하기 싫을까?" />
   <meta property="og:description" content="귀찮음은 게으름이 아니라 뇌의 에너지 관리 전략이다. 7가지 과학적 요인으로 당신의 귀찮음 원인을 정확하게 진단합니다." />
-  <meta property="og:image" content="https://via.placeholder.com/1200x630/1a1a1a/ffffff?text=귀찮음+진단기" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/1a1a1a/ffffff&text=Laziness+Diagnosis" />
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
   <meta property="twitter:title" content="귀찮음 진단기 – 오늘 나는 왜 아무것도 하기 싫을까?" />
   <meta property="twitter:description" content="7가지 과학적 요인으로 당신의 귀찮음 원인을 정확하게 진단합니다." />
-  <meta property="twitter:image" content="https://via.placeholder.com/1200x630/1a1a1a/ffffff?text=귀찮음+진단기" />
+  <meta property="twitter:image" content="https://dummyimage.com/1200x630/1a1a1a/ffffff&text=Laziness+Diagnosis" />
   
   <title>귀찮음 진단기 – 오늘 나는 왜 아무것도 하기 싫을까?</title>
   <script src="https://cdn.tailwindcss.com"></script>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700&display=swap');
     body { font-family: 'Noto Sans KR', sans-serif; }
-    .question-group { transition: all 0.3s ease; }
+    .question-group { 
+      transition: all 0.3s ease; 
+      animation: fadeIn 0.4s ease-in;
+    }
     .question-group:hover { transform: translateY(-2px); }
     #result { animation: fadeIn 0.5s ease-in; }
     @keyframes fadeIn {
@@ -36,6 +39,9 @@
     .recommendation-card:hover {
       transform: translateX(8px);
       box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+    .animate-fadeIn {
+      animation: fadeIn 0.4s ease-in;
     }
   </style>
 </head>
@@ -55,121 +61,39 @@
       </p>
     </header>
 
-    <!-- Form -->
-    <form id="testForm" class="space-y-6 mb-8">
-      
-      <!-- Q1: 에너지 절약 본능 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q1. 지금 해야 할 일을 미루면 나중에 더 편할 것 같다는 생각이 드나요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(에너지 절약 본능 발동 여부)</span>
-        </label>
-        <select name="q1" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 지금 하는 게 낫다고 생각함</option>
-          <option value="1">조금 그렇다 - 가끔 그런 생각이 듦</option>
-          <option value="2">보통이다 - 상황에 따라 다름</option>
-          <option value="3">꽤 그렇다 - 자주 미루는 게 낫다고 느낌</option>
-          <option value="4">매우 그렇다 - 지금 하는 것보다 나중이 훨씬 나음</option>
-        </select>
+    <!-- Progress Bar -->
+    <div id="progressSection" class="mb-6">
+      <div class="flex justify-between items-center mb-2">
+        <span class="text-sm font-semibold text-gray-700" id="progressText">질문 1 / 7</span>
+        <span class="text-sm text-gray-500" id="progressPercent">14%</span>
       </div>
-
-      <!-- Q2: 일이 너무 크거나 모호한가 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q2. 해야 할 일이 막연하거나 너무 커서 어디서부터 시작해야 할지 모르겠나요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(일의 크기와 명확성)</span>
-        </label>
-        <select name="q2" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 할 일이 명확하고 작은 단위로 나뉘어 있음</option>
-          <option value="1">조금 그렇다 - 가끔 막막한 느낌이 듦</option>
-          <option value="2">보통이다 - 일부는 명확하고 일부는 모호함</option>
-          <option value="3">꽤 그렇다 - 대부분 막연하고 크게 느껴짐</option>
-          <option value="4">매우 그렇다 - 정말 크고 모호해서 시작조차 못하겠음</option>
-        </select>
+      <div class="w-full bg-gray-200 rounded-full h-2.5">
+        <div id="progressBar" class="bg-black h-2.5 rounded-full transition-all duration-300" style="width: 14%"></div>
       </div>
+    </div>
 
-      <!-- Q3: 보상이 멀리 있는가 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q3. 지금 하는 일의 결과나 보상이 너무 멀리 있어서 동기가 잘 생기지 않나요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(보상의 거리감)</span>
-        </label>
-        <select name="q3" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 결과가 가까워서 동기가 잘 생김</option>
-          <option value="1">조금 그렇다 - 가끔 보상이 멀게 느껴짐</option>
-          <option value="2">보통이다 - 보상이 조금은 멀지만 괜찮음</option>
-          <option value="3">꽤 그렇다 - 보상이 너무 멀어서 의욕이 잘 안 생김</option>
-          <option value="4">매우 그렇다 - 보상이 정말 멀어서 시작할 이유가 없음</option>
-        </select>
-      </div>
+    <!-- Question Container -->
+    <div id="questionContainer" class="mb-8">
+      <!-- 질문들이 동적으로 들어갈 공간 -->
+    </div>
 
-      <!-- Q4: 감정 에너지 고갈 & 스트레스 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q4. 최근 스트레스를 많이 받았거나 감정적으로 지친 상태인가요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(감정 에너지 고갈 및 스트레스 수준)</span>
-        </label>
-        <select name="q4" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 컨디션 좋고 스트레스 거의 없음</option>
-          <option value="1">조금 그렇다 - 가끔 스트레스 받지만 괜찮음</option>
-          <option value="2">보통이다 - 적당한 스트레스 수준</option>
-          <option value="3">꽤 그렇다 - 스트레스가 많고 감정적으로 지침</option>
-          <option value="4">매우 그렇다 - 완전히 지쳐 있고 감정 에너지가 바닥</option>
-        </select>
-      </div>
-
-      <!-- Q5: 결정 피로 (선택 과부하) -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q5. 해야 할 일이나 선택할 옵션이 너무 많아서 머리가 복잡하고 결정하기 힘든가요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(결정 피로 및 선택 과부하)</span>
-        </label>
-        <select name="q5" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 선택지가 명확하고 결정하기 쉬움</option>
-          <option value="1">조금 그렇다 - 가끔 선택지가 많아서 고민됨</option>
-          <option value="2">보통이다 - 적당히 선택할 게 있음</option>
-          <option value="3">꽤 그렇다 - 선택지가 너무 많아서 머리가 아픔</option>
-          <option value="4">매우 그렇다 - 결정할 게 너무 많아서 아예 못 함</option>
-        </select>
-      </div>
-
-      <!-- Q6: 몸의 피로도 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q6. 오늘 몸이 피곤하거나 졸리거나 컨디션이 좋지 않은가요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(신체적 피로도)</span>
-        </label>
-        <select name="q6" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 컨디션 매우 좋음, 에너지 충만</option>
-          <option value="1">조금 그렇다 - 약간 피곤하지만 큰 문제 없음</option>
-          <option value="2">보통이다 - 평소와 비슷한 컨디션</option>
-          <option value="3">꽤 그렇다 - 피곤하고 컨디션이 안 좋음</option>
-          <option value="4">매우 그렇다 - 몸이 매우 피곤하고 움직이기 힘듦</option>
-        </select>
-      </div>
-
-      <!-- Q7: 자동화·루틴 여부 -->
-      <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200">
-        <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-          Q7. 해야 할 일이 루틴화되어 있지 않아서 매번 새로 생각하고 결정해야 하나요?
-          <span class="block text-xs text-gray-500 font-normal mt-1">(자동화 및 루틴 여부)</span>
-        </label>
-        <select name="q7" class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base">
-          <option value="0">전혀 아니다 - 이미 자동화된 루틴이라 쉽게 할 수 있음</option>
-          <option value="1">조금 그렇다 - 대부분 루틴화되어 있고 일부만 새로 해야 함</option>
-          <option value="2">보통이다 - 반반 정도</option>
-          <option value="3">꽤 그렇다 - 대부분이 새로 생각하고 결정해야 하는 일</option>
-          <option value="4">매우 그렇다 - 모든 게 새롭고 루틴이 없어서 매우 힘듦</option>
-        </select>
-      </div>
-
+    <!-- Navigation Buttons -->
+    <div id="navigationButtons" class="flex gap-3 mb-8">
       <button
-        type="submit"
-        class="w-full bg-black text-white py-4 rounded-xl mt-6 text-lg font-semibold hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+        id="prevButton"
+        onclick="goToPreviousQuestion()"
+        class="hidden flex-1 bg-gray-200 text-gray-800 py-4 rounded-xl text-lg font-semibold hover:bg-gray-300 transition-colors"
       >
-        결과 보기
+        이전
       </button>
-    </form>
+      <button
+        id="nextButton"
+        onclick="goToNextQuestion()"
+        class="flex-1 bg-black text-white py-4 rounded-xl text-lg font-semibold hover:bg-gray-800 transition-colors shadow-lg hover:shadow-xl transform hover:scale-[1.02] active:scale-[0.98]"
+      >
+        다음
+      </button>
+    </div>
 
     <!-- Result Section -->
     <div id="result" class="hidden">
@@ -214,15 +138,231 @@
   </div>
 
   <script>
-    const form = document.getElementById("testForm");
-    const resultBox = document.getElementById("result");
-    const resultContent = document.getElementById("resultContent");
+    // 질문 데이터
+    const questions = [
+      {
+        id: 1,
+        name: "q1",
+        label: "Q1. 지금 해야 할 일을 미루면 나중에 더 편할 것 같다는 생각이 드나요?",
+        subtitle: "(에너지 절약 본능 발동 여부)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 지금 하는 게 낫다고 생각함" },
+          { value: "1", text: "조금 그렇다 - 가끔 그런 생각이 듦" },
+          { value: "2", text: "보통이다 - 상황에 따라 다름" },
+          { value: "3", text: "꽤 그렇다 - 자주 미루는 게 낫다고 느낌" },
+          { value: "4", text: "매우 그렇다 - 지금 하는 것보다 나중이 훨씬 나음" }
+        ]
+      },
+      {
+        id: 2,
+        name: "q2",
+        label: "Q2. 해야 할 일이 막연하거나 너무 커서 어디서부터 시작해야 할지 모르겠나요?",
+        subtitle: "(일의 크기와 명확성)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 할 일이 명확하고 작은 단위로 나뉘어 있음" },
+          { value: "1", text: "조금 그렇다 - 가끔 막막한 느낌이 듦" },
+          { value: "2", text: "보통이다 - 일부는 명확하고 일부는 모호함" },
+          { value: "3", text: "꽤 그렇다 - 대부분 막연하고 크게 느껴짐" },
+          { value: "4", text: "매우 그렇다 - 정말 크고 모호해서 시작조차 못하겠음" }
+        ]
+      },
+      {
+        id: 3,
+        name: "q3",
+        label: "Q3. 지금 하는 일의 결과나 보상이 너무 멀리 있어서 동기가 잘 생기지 않나요?",
+        subtitle: "(보상의 거리감)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 결과가 가까워서 동기가 잘 생김" },
+          { value: "1", text: "조금 그렇다 - 가끔 보상이 멀게 느껴짐" },
+          { value: "2", text: "보통이다 - 보상이 조금은 멀지만 괜찮음" },
+          { value: "3", text: "꽤 그렇다 - 보상이 너무 멀어서 의욕이 잘 안 생김" },
+          { value: "4", text: "매우 그렇다 - 보상이 정말 멀어서 시작할 이유가 없음" }
+        ]
+      },
+      {
+        id: 4,
+        name: "q4",
+        label: "Q4. 최근 스트레스를 많이 받았거나 감정적으로 지친 상태인가요?",
+        subtitle: "(감정 에너지 고갈 및 스트레스 수준)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 컨디션 좋고 스트레스 거의 없음" },
+          { value: "1", text: "조금 그렇다 - 가끔 스트레스 받지만 괜찮음" },
+          { value: "2", text: "보통이다 - 적당한 스트레스 수준" },
+          { value: "3", text: "꽤 그렇다 - 스트레스가 많고 감정적으로 지침" },
+          { value: "4", text: "매우 그렇다 - 완전히 지쳐 있고 감정 에너지가 바닥" }
+        ]
+      },
+      {
+        id: 5,
+        name: "q5",
+        label: "Q5. 해야 할 일이나 선택할 옵션이 너무 많아서 머리가 복잡하고 결정하기 힘든가요?",
+        subtitle: "(결정 피로 및 선택 과부하)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 선택지가 명확하고 결정하기 쉬움" },
+          { value: "1", text: "조금 그렇다 - 가끔 선택지가 많아서 고민됨" },
+          { value: "2", text: "보통이다 - 적당히 선택할 게 있음" },
+          { value: "3", text: "꽤 그렇다 - 선택지가 너무 많아서 머리가 아픔" },
+          { value: "4", text: "매우 그렇다 - 결정할 게 너무 많아서 아예 못 함" }
+        ]
+      },
+      {
+        id: 6,
+        name: "q6",
+        label: "Q6. 오늘 몸이 피곤하거나 졸리거나 컨디션이 좋지 않은가요?",
+        subtitle: "(신체적 피로도)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 컨디션 매우 좋음, 에너지 충만" },
+          { value: "1", text: "조금 그렇다 - 약간 피곤하지만 큰 문제 없음" },
+          { value: "2", text: "보통이다 - 평소와 비슷한 컨디션" },
+          { value: "3", text: "꽤 그렇다 - 피곤하고 컨디션이 안 좋음" },
+          { value: "4", text: "매우 그렇다 - 몸이 매우 피곤하고 움직이기 힘듦" }
+        ]
+      },
+      {
+        id: 7,
+        name: "q7",
+        label: "Q7. 해야 할 일이 루틴화되어 있지 않아서 매번 새로 생각하고 결정해야 하나요?",
+        subtitle: "(자동화 및 루틴 여부)",
+        options: [
+          { value: "0", text: "전혀 아니다 - 이미 자동화된 루틴이라 쉽게 할 수 있음" },
+          { value: "1", text: "조금 그렇다 - 대부분 루틴화되어 있고 일부만 새로 해야 함" },
+          { value: "2", text: "보통이다 - 반반 정도" },
+          { value: "3", text: "꽤 그렇다 - 대부분이 새로 생각하고 결정해야 하는 일" },
+          { value: "4", text: "매우 그렇다 - 모든 게 새롭고 루틴이 없어서 매우 힘듦" }
+        ]
+      }
+    ];
 
-    form.addEventListener("submit", (e) => {
-      e.preventDefault();
+    // 상태 관리
+    let currentQuestionIndex = 0;
+    let answers = {};
 
+    // 초기화
+    function init() {
+      showQuestion(0);
+      updateProgress();
+    }
+
+    // 질문 표시
+    function showQuestion(index) {
+      const question = questions[index];
+      const container = document.getElementById("questionContainer");
+      
+      container.innerHTML = `
+        <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200 animate-fadeIn">
+          <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
+            ${question.label}
+            <span class="block text-xs text-gray-500 font-normal mt-1">${question.subtitle}</span>
+          </label>
+          <select 
+            id="questionSelect"
+            name="${question.name}" 
+            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base"
+            onchange="saveAnswer('${question.name}', this.value)"
+          >
+            <option value="">선택해주세요</option>
+            ${question.options.map(opt => `
+              <option value="${opt.value}" ${answers[question.name] === opt.value ? 'selected' : ''}>${opt.text}</option>
+            `).join('')}
+          </select>
+        </div>
+      `;
+
+      // 저장된 답변이 있으면 선택
+      if (answers[question.name]) {
+        document.getElementById("questionSelect").value = answers[question.name];
+      }
+
+      // 버튼 상태 업데이트
+      updateButtons();
+    }
+
+    // 답변 저장
+    function saveAnswer(name, value) {
+      answers[name] = value;
+    }
+
+    // 진행도 업데이트
+    function updateProgress() {
+      const totalQuestions = questions.length;
+      const current = currentQuestionIndex + 1;
+      const percent = Math.round((current / totalQuestions) * 100);
+
+      document.getElementById("progressText").textContent = `질문 ${current} / ${totalQuestions}`;
+      document.getElementById("progressPercent").textContent = `${percent}%`;
+      document.getElementById("progressBar").style.width = `${percent}%`;
+    }
+
+    // 버튼 상태 업데이트
+    function updateButtons() {
+      const prevButton = document.getElementById("prevButton");
+      const nextButton = document.getElementById("nextButton");
+      const currentQuestion = questions[currentQuestionIndex];
+
+      // 이전 버튼 표시/숨김
+      if (currentQuestionIndex === 0) {
+        prevButton.classList.add("hidden");
+      } else {
+        prevButton.classList.remove("hidden");
+      }
+
+      // 다음 버튼 텍스트 변경
+      if (currentQuestionIndex === questions.length - 1) {
+        nextButton.textContent = "결과 보기";
+      } else {
+        nextButton.textContent = "다음";
+      }
+    }
+
+    // 다음 질문으로 이동
+    function goToNextQuestion() {
+      const currentQuestion = questions[currentQuestionIndex];
+      const selectElement = document.getElementById("questionSelect");
+      
+      if (!selectElement || !selectElement.value) {
+        alert("답변을 선택해주세요.");
+        return;
+      }
+
+      saveAnswer(currentQuestion.name, selectElement.value);
+
+      if (currentQuestionIndex < questions.length - 1) {
+        currentQuestionIndex++;
+        showQuestion(currentQuestionIndex);
+        updateProgress();
+      } else {
+        // 마지막 질문이면 결과 표시
+        showResult();
+      }
+    }
+
+    // 이전 질문으로 이동
+    function goToPreviousQuestion() {
+      if (currentQuestionIndex > 0) {
+        const currentQuestion = questions[currentQuestionIndex];
+        const selectElement = document.getElementById("questionSelect");
+        if (selectElement) {
+          saveAnswer(currentQuestion.name, selectElement.value);
+        }
+        
+        currentQuestionIndex--;
+        showQuestion(currentQuestionIndex);
+        updateProgress();
+      }
+    }
+
+    // 결과 표시
+    function showResult() {
+      // 진행 바와 질문 컨테이너 숨기기
+      document.getElementById("progressSection").classList.add("hidden");
+      document.getElementById("questionContainer").classList.add("hidden");
+      document.getElementById("navigationButtons").classList.add("hidden");
+
+      // 총점 계산
       let total = 0;
-      new FormData(form).forEach((v) => (total += Number(v)));
+      Object.values(answers).forEach(value => {
+        total += Number(value) || 0;
+      });
 
       let title = "";
       let emoji = "";
@@ -324,6 +464,7 @@
         ];
       }
 
+      const resultContent = document.getElementById("resultContent");
       resultContent.innerHTML = `
         <div class="text-center mb-6">
           <div class="text-6xl mb-4">${emoji}</div>
@@ -348,12 +489,13 @@
         </div>
       `;
 
+      const resultBox = document.getElementById("result");
       resultBox.classList.remove("hidden");
       resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
 
       // 결과 공유를 위한 데이터 저장
       window.currentResult = { total, title, emoji };
-    });
+    }
 
     function shareResult() {
       const result = window.currentResult;
@@ -381,6 +523,9 @@
         alert('공유 기능을 사용할 수 없습니다. 링크를 직접 복사해주세요.');
       });
     }
+
+    // 페이지 로드 시 초기화
+    init();
   </script>
 </body>
 </html>
