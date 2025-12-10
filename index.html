@@ -43,6 +43,24 @@
     .animate-fadeIn {
       animation: fadeIn 0.4s ease-in;
     }
+    .option-card {
+      transition: all 0.2s ease;
+      cursor: pointer;
+      border: 2px solid #e5e7eb;
+    }
+    .option-card:hover {
+      border-color: #1a1a1a;
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .option-card.selected {
+      border-color: #1a1a1a;
+      background-color: #f9fafb;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    .option-card input[type="radio"] {
+      cursor: pointer;
+    }
   </style>
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 min-h-screen">
@@ -101,16 +119,14 @@
         <div id="resultContent"></div>
       </div>
 
-      <!-- 광고 배치 영역 (AdSense용) -->
+      <!-- 광고 배치 영역 (카카오 애드핏) -->
       <div class="bg-white rounded-xl shadow-sm p-6 mb-6">
-        <h3 class="text-xl font-bold mb-4 text-gray-900">귀찮음을 줄이는 자동화 툴 추천</h3>
-        <div class="text-sm text-gray-500 mb-4">
-          아래 추천 도구들이 귀찮음을 크게 줄여줄 수 있습니다.
-        </div>
-        <!-- AdSense 광고 영역 -->
-        <div class="ad-container bg-gray-50 rounded-lg p-4 text-center text-gray-400 text-sm min-h-[200px] flex items-center justify-center border-2 border-dashed border-gray-200">
-          <!-- Google AdSense 광고 코드를 여기에 삽입하세요 -->
-          광고 영역 (AdSense 코드 삽입)
+        <div class="flex justify-center">
+          <ins class="kakao_ad_area" style="display:none;"
+            data-ad-unit = "DAN-ZDYJtYxqvBWHJHWq"
+            data-ad-width = "300"
+            data-ad-height = "250"></ins>
+          <script type="text/javascript" src="//t1.daumcdn.net/kas/static/ba.min.js" async></script>
         </div>
       </div>
 
@@ -247,33 +263,65 @@
     function showQuestion(index) {
       const question = questions[index];
       const container = document.getElementById("questionContainer");
+      const savedAnswer = answers[question.name];
       
       container.innerHTML = `
-        <div class="question-group bg-white p-5 md:p-6 rounded-xl shadow-sm border border-gray-200 animate-fadeIn">
-          <label class="block font-semibold text-gray-900 mb-3 text-base md:text-lg">
-            ${question.label}
-            <span class="block text-xs text-gray-500 font-normal mt-1">${question.subtitle}</span>
-          </label>
-          <select 
-            id="questionSelect"
-            name="${question.name}" 
-            class="w-full p-3 border-2 border-gray-200 rounded-lg focus:border-gray-900 focus:outline-none transition-colors text-base"
-            onchange="saveAnswer('${question.name}', this.value)"
-          >
-            <option value="">선택해주세요</option>
-            ${question.options.map(opt => `
-              <option value="${opt.value}" ${answers[question.name] === opt.value ? 'selected' : ''}>${opt.text}</option>
-            `).join('')}
-          </select>
+        <div class="question-group bg-white p-6 md:p-8 rounded-2xl shadow-sm border border-gray-100 animate-fadeIn">
+          <div class="mb-6">
+            <h2 class="text-xl md:text-2xl font-bold text-gray-900 mb-2 leading-relaxed">
+              ${question.label}
+            </h2>
+            <p class="text-sm text-gray-500">${question.subtitle}</p>
+          </div>
+          
+          <div class="space-y-3">
+            ${question.options.map((opt, idx) => {
+              const isSelected = savedAnswer === opt.value;
+              const optionLabels = ['①', '②', '③', '④', '⑤'];
+              return `
+                <label 
+                  class="option-card block p-4 rounded-xl bg-white ${isSelected ? 'selected' : ''}"
+                  onclick="selectOption('${question.name}', '${opt.value}')"
+                >
+                  <div class="flex items-start gap-3">
+                    <input 
+                      type="radio" 
+                      name="${question.name}" 
+                      value="${opt.value}"
+                      ${isSelected ? 'checked' : ''}
+                      onchange="saveAnswer('${question.name}', '${opt.value}')"
+                      class="mt-1 w-5 h-5 text-black border-gray-300 focus:ring-black focus:ring-2"
+                    />
+                    <div class="flex-1">
+                      <span class="font-semibold text-gray-900 mr-2">${optionLabels[idx]}</span>
+                      <span class="text-gray-700 leading-relaxed">${opt.text}</span>
+                    </div>
+                  </div>
+                </label>
+              `;
+            }).join('')}
+          </div>
         </div>
       `;
 
-      // 저장된 답변이 있으면 선택
-      if (answers[question.name]) {
-        document.getElementById("questionSelect").value = answers[question.name];
-      }
-
       // 버튼 상태 업데이트
+      updateButtons();
+    }
+
+    // 옵션 선택 함수
+    function selectOption(name, value) {
+      saveAnswer(name, value);
+      // UI 업데이트
+      const labels = document.querySelectorAll(`input[name="${name}"]`);
+      labels.forEach(radio => {
+        const card = radio.closest('.option-card');
+        if (radio.value === value) {
+          card.classList.add('selected');
+          radio.checked = true;
+        } else {
+          card.classList.remove('selected');
+        }
+      });
       updateButtons();
     }
 
@@ -317,14 +365,14 @@
     // 다음 질문으로 이동
     function goToNextQuestion() {
       const currentQuestion = questions[currentQuestionIndex];
-      const selectElement = document.getElementById("questionSelect");
+      const selectedRadio = document.querySelector(`input[name="${currentQuestion.name}"]:checked`);
       
-      if (!selectElement || !selectElement.value) {
+      if (!selectedRadio) {
         alert("답변을 선택해주세요.");
         return;
       }
 
-      saveAnswer(currentQuestion.name, selectElement.value);
+      saveAnswer(currentQuestion.name, selectedRadio.value);
 
       if (currentQuestionIndex < questions.length - 1) {
         currentQuestionIndex++;
@@ -340,9 +388,9 @@
     function goToPreviousQuestion() {
       if (currentQuestionIndex > 0) {
         const currentQuestion = questions[currentQuestionIndex];
-        const selectElement = document.getElementById("questionSelect");
-        if (selectElement) {
-          saveAnswer(currentQuestion.name, selectElement.value);
+        const selectedRadio = document.querySelector(`input[name="${currentQuestion.name}"]:checked`);
+        if (selectedRadio) {
+          saveAnswer(currentQuestion.name, selectedRadio.value);
         }
         
         currentQuestionIndex--;
