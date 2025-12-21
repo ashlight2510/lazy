@@ -9,7 +9,7 @@
   <meta property="og:type" content="website" />
   <meta property="og:title" content="귀찮음 진단기 – 오늘 나는 왜 아무것도 하기 싫을까?" />
   <meta property="og:description" content="귀찮음은 게으름이 아니라 뇌의 에너지 관리 전략이다. 7가지 과학적 요인으로 당신의 귀찮음 원인을 정확하게 진단합니다." />
-  <meta property="og:image" content="https://dummyimage.com/1200x630/1a1a1a/ffffff&text=Laziness+Diagnosis" />
+  <meta property="og:image" content="https://dummyimage.com/1200x630/1f2937/f9fafb&text=Laziness+Diagnosis" />
   
   <!-- Twitter -->
   <meta property="twitter:card" content="summary_large_image" />
@@ -62,6 +62,8 @@
       cursor: pointer;
     }
   </style>
+    <meta property="og:image:alt" content="Laziness Diagnosis" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg%20xmlns%3D%27http%3A//www.w3.org/2000/svg%27%20viewBox%3D%270%200%20100%20100%27%3E%3Ctext%20y%3D%27.9em%27%20font-size%3D%2790%27%3E%F0%9F%98%B4%3C/text%3E%3C/svg%3E" />
 </head>
 <body class="bg-gradient-to-br from-gray-50 to-gray-100 text-gray-900 min-h-screen">
   <div class="max-w-2xl mx-auto p-4 md:p-6 lg:p-8">
@@ -575,6 +577,38 @@
     // 페이지 로드 시 초기화
     init();
   </script>
+
+    
+    <script>
+      (function () {
+        'use strict';
+        const targetUrl = 'https://funnyfunny.cloud/';
+        function addMoreTestsButton() {
+          if (document.getElementById('more-tests-btn')) return;
+          const moreBtn = document.createElement('button');
+          moreBtn.id = 'more-tests-btn';
+          moreBtn.type = 'button';
+          moreBtn.dataset.url = targetUrl;
+          moreBtn.textContent = '더 많은 테스트 해보기';
+          moreBtn.className = 'w-full py-4 bg-white border border-purple-100 text-purple-700 font-semibold rounded-xl hover:bg-purple-50 hover:border-purple-200 transition-all duration-200 mt-3';
+          moreBtn.addEventListener('click', function () {
+            window.open(targetUrl, '_blank', 'noopener');
+          });
+          const shareButton = document.querySelector("button#share-btn, button#shareBtn, button[id*=\"share\"]");
+          if (shareButton) {
+            shareButton.insertAdjacentElement('afterend', moreBtn);
+          } else if (document.body) {
+            document.body.appendChild(moreBtn);
+          }
+        }
+        if (document.readyState === 'loading') {
+          document.addEventListener('DOMContentLoaded', addMoreTestsButton);
+        } else {
+          addMoreTestsButton();
+        }
+      })();
+    </script>
+
 </body>
 </html>
 
