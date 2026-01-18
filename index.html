@@ -830,37 +830,14 @@
         ];
       }
 
-      const resultContent = document.getElementById("resultContent");
-      resultContent.innerHTML = `
-        <div class="text-center mb-6">
-          <div class="text-6xl mb-4">${emoji}</div>
-          <h2 class="text-3xl md:text-4xl font-bold mb-3 ${colorClass}">${title}</h2>
-          <p class="text-lg text-gray-700 leading-relaxed mb-2">${t("resultTotalScore", { total })}</p>
-        </div>
-        
-        <div class="border-t border-gray-200 pt-6 mb-6">
-          <p class="text-base md:text-lg text-gray-800 leading-relaxed mb-6">${desc}</p>
-        </div>
-
-        <div class="mt-8">
-          <h3 class="text-xl font-bold mb-4 text-gray-900">${t("resultRecommendations")}</h3>
-          <div class="space-y-4">
-            ${recommendations.map((rec, idx) => `
-              <div class="recommendation-card bg-gray-50 p-5 rounded-lg border-l-4 ${idx === 0 ? 'border-gray-900' : 'border-gray-300'}">
-                <h4 class="font-bold text-gray-900 mb-2">${rec.title}</h4>
-                <p class="text-sm text-gray-600">${rec.desc}</p>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      `;
-
-      const resultBox = document.getElementById("result");
-      resultBox.classList.remove("hidden");
-      resultBox.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-      // 결과 공유를 위한 데이터 저장
-      window.currentResult = { total, title, emoji };
+      // result.html로 리다이렉트
+      const params = new URLSearchParams({
+        total: total.toString(),
+        title: title || '',
+        emoji: emoji || '',
+        level: total <= 7 ? 'light' : (total <= 14 ? 'medium' : (total <= 21 ? 'severe' : 'extreme'))
+      });
+      window.location.href = `result.html?${params.toString()}`;
     }
 
     function shareResult() {
